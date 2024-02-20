@@ -1,0 +1,20 @@
+tool: DatabricksAPI.Search
+module: DatabricksAPI
+class_name: Search
+documentation: Provide the Vector Search Index of API documentation to enable searches for endpoint documenation.
+path: /Workspace/Repos/robert.mosley@databricks.com/agent-studio/Tool/DatabricksAPI.py
+folder: Tool
+file: DatabricksAPI.py
+pip_requirements:
+- databricks-vectorsearch
+parameters:
+-   annotation: str
+    name: vector_search_endpoint_name
+    index: '1'
+    default: null
+    kind: positional or keyword
+-   annotation: str
+    name: index_name
+    index: '2'
+    default: null
+    kind: positional or keyword

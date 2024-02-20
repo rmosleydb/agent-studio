@@ -1,0 +1,19 @@
+tool: CodeRunner.PythonExecutor
+module: CodeRunner
+class_name: PythonExecutor
+documentation: Run Python scripts against a Databricks Cluster. Specify the cluster id and a working directory to load scripts into.
+path: /Workspace/Repos/robert.mosley@databricks.com/agent-studio/Tool/CodeRunner.py
+folder: Tool
+file: CodeRunner.py
+pip_requirements: []
+parameters:
+-   annotation: str
+    name: cluster_id
+    index: '1'
+    default: null
+    kind: positional or keyword
+-   annotation: str
+    name: working_directory
+    index: '2'
+    default: null
+    kind: positional or keyword

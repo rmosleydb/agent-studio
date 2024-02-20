@@ -8,6 +8,19 @@ dbutils.library.restartPython()
 
 # COMMAND ----------
 
+import os
+os.environ['OPENAI_API_KEY'] = dbutils.secrets.get('agent_studio','open_ai')
+os.environ['DATABRICKS_TOKEN'] = dbutils.secrets.get('agent_studio','databricks_token')
+os.environ['DATABRICKS_HOST'] = dbutils.secrets.get('agent_studio','databricks_host')
+os.environ['AGENT_STUDIO_PATH'] = dbutils.secrets.get('agent_studio','folder_path')
+
+from Core.AgentCreator import AgentParser
+import gradio as gr
+
+cluster_id = dbutils.notebook.entry_point.getDbutils().notebook().getContext().tags().apply('clusterId')
+
+# COMMAND ----------
+
 # MAGIC %md ### Helper functions
 
 # COMMAND ----------
@@ -168,19 +181,20 @@ class DatabricksApp:
 
 # COMMAND ----------
 
-#tools_df = spark.sql("select *, concat(module, '.', class_name) as Tool, documentation as Description from robert_mosley.sql_ai.tool_class").toPandas()
-#agent_tools_df = spark.sql('select class_name as `Tool Name`, documentation as Description from robert_mosley.sql_ai.tool_class where 1=2').toPandas()
-#tool_parameters_df = spark.sql("select concat(module, '.', class_name) as Tool, ordinal_position, parameter_name, parameter_type, default_value, parameter_kind from robert_mosley.sql_ai.tool_class_params order by 1,2").toPandas()
+def create_agent(yaml_str):
+  p = AgentParser(cluster_id)#'0822-172318-4b9whfq4'
+  gr.Info("Launching Agent. This will take a minute. A second notification will present when it's complete.")
+  msg = p.create_agent(yaml_str)
+  gr.Info(msg)
 
-#tools_dict = tools_df.to_dict(orient="records")
-#tools_dict = {item["Tool"]: item["Description"] for item in tools_dict}
 
 # COMMAND ----------
 
 import os
 import yaml
 
-directory = "/Volumes/robert_mosley/sql_ai/files/agent_studio/tool"
+directory = os.path.join(os.environ.get('AGENT_STUDIO_PATH'), "Tool/yaml/")
+#"/Volumes/robert_mosley/sql_ai/files/agent_studio/tool"
 data_array = []
 
 # Iterate through the files in the directory
@@ -228,25 +242,6 @@ def update_field(field_name):
     agent_dict[field_name] = input
     return yaml_string()
   return set_field
-
-# COMMAND ----------
-
-import os
-os.environ['OPENAI_API_KEY']  = dbutils.secrets.get('agent_studio','open_ai')
-os.environ['DATABRICKS_TOKEN']  = dbutils.secrets.get('agent_studio','demo_field_eng_token')
-os.environ['DATABRICKS_HOST']  = dbutils.secrets.get('agent_studio','demo_field_eng_host')
-
-from Chat.AgentCreator import AgentParser
-import gradio as gr
-
-cluster_id = dbutils.notebook.entry_point.getDbutils().notebook().getContext().tags().apply('clusterId')
-
-def create_agent(yaml_str):
-  p = AgentParser(cluster_id)#'0822-172318-4b9whfq4'
-  gr.Info("Launching Agent. This will take a minute. A second notification will present when it's complete.")
-  msg = p.create_agent(yaml_str)
-  gr.Info(msg)
-
 
 # COMMAND ----------
 
@@ -340,50 +335,6 @@ with gr.Blocks(theme=gr.themes.Base()) as agent_studio:
   
           
       
-
-# COMMAND ----------
-
-'''import gradio as gr
-import random
-import time
-
-
-
-def process_example(message: str, history: str):
-    # system_prompt, max_new_tokens, temperature, top_p, top_k
-    output = generate_output(message, history)
-    return output
-
-chatbot = gr.Chatbot(height=500)
-
-details = gr.JSON()
-
-with gr.Blocks(theme=gr.themes.Soft()) as demo:
-    with gr.Row():
-        gr.HTML(
-            show_label=False,
-            value="<img src='https://databricks.gallerycdn.vsassets.io/extensions/databricks/databricks/0.3.15/1686753455931/Microsoft.VisualStudio.Services.Icons.Default' height='40' width='40'/><div font size='1'></div>",
-        )
-    gr.Markdown(DESCRIPTION)
-
-    tabbed = gr.TabbedInterface([chatbot, details], ["Chat", "JSON"])
-
-    #chatbot = gr.Chatbot(height=500)
-    msg = gr.Textbox(label='User Question'
-                    #  , value='Ask your question'
-                     )
-    clear = gr.ClearButton([msg, chatbot, details])
-    clear.click(reset_thread)
-
-    def respond(message, chat_history):
-        bot_message = process_example(message, chat_history)
-        chat_history.append((message, bot_message))
-        return "", chat_history, message_thread
-
-    msg.submit(fn=respond,
-        inputs=[msg, chatbot],
-        outputs=[msg, chatbot, details])
-'''
 
 # COMMAND ----------
 

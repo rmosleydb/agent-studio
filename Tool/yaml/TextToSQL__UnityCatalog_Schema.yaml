@@ -1,0 +1,24 @@
+tool: TextToSQL.UnityCatalog_Schema
+module: TextToSQL
+class_name: UnityCatalog_Schema
+documentation: Specify a UC Schema and navigate UC metadata to generate Text to SQL.
+path: /Workspace/Repos/robert.mosley@databricks.com/agent-studio/Tool/TextToSQL.py
+folder: Tool
+file: TextToSQL.py
+pip_requirements: []
+parameters:
+-   annotation: str
+    name: warehouse_id
+    index: '1'
+    default: null
+    kind: positional or keyword
+-   annotation: str
+    name: catalog
+    index: '2'
+    default: null
+    kind: positional or keyword
+-   annotation: str
+    name: schema
+    index: '3'
+    default: null
+    kind: positional or keyword

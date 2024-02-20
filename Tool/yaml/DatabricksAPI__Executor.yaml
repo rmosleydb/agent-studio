@@ -1,0 +1,10 @@
+tool: DatabricksAPI.Executor
+module: DatabricksAPI
+class_name: Executor
+documentation: Tool that enables execution of any Databricks API endpoint.
+path: /Workspace/Repos/robert.mosley@databricks.com/agent-studio/Tool/DatabricksAPI.py
+folder: Tool
+file: DatabricksAPI.py
+pip_requirements:
+- databricks-vectorsearch
+parameters: []

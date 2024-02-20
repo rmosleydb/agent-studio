@@ -1,0 +1,30 @@
+tool: VectorSearch.Retriever
+module: VectorSearch
+class_name: Retriever
+documentation: Tool that searches any vector database. Use the Function Descriptor to add tool details for the LLM using it.
+path: /Workspace/Repos/robert.mosley@databricks.com/agent-studio/Tool/VectorSearch.py
+folder: Tool
+file: VectorSearch.py
+pip_requirements:
+- databricks-vectorsearch
+parameters:
+-   annotation: str
+    name: vector_search_endpoint_name
+    index: '1'
+    default: null
+    kind: positional or keyword
+-   annotation: str
+    name: index_name
+    index: '2'
+    default: null
+    kind: positional or keyword
+-   annotation: list
+    name: return_columns
+    index: '3'
+    default: null
+    kind: positional or keyword
+-   annotation: str
+    name: function_descriptor
+    index: '4'
+    default: ''
+    kind: positional or keyword
