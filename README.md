@@ -1,7 +1,7 @@
 # agent-studio
 A Databricks framework for quick Agent solutions.
 
-###Initial Setup
+### Initial Setup
 To get started, access the `secrets` notebook in the `Setup` folder. There are **four** secrets that need to be created.
 
 * Databricks Host - This is the workspace url. The sample code gets it configured for you.
@@ -20,5 +20,5 @@ There are two main notebooks that drive the application.
 * Agent Studio - Run this notebook and click on the generated link at the bottom cells. This will open a Gradio App in a neighboring tab. Here is where you can setup your agent.
 * Chatbot-App - Specify the endpoint name and a description, and run the notebook. Click the generated link at the bottom, and a Gradio App will open up in a neighboring tab. Use this to test your agent.
 
-###Tools
+### Tools
 After creating or modifying tool python files, run the `Parse Tools` notebook to generate the yaml for the tools.
