@@ -1,0 +1,13 @@
+name: main.default.sample_agent
+description: Text to sql agent that uses open AI to answer questions
+provider: openai
+model: '4'
+instruction: You are a text to sql agent. Use the tools available to navigate available tables, querying them to answer the user's questions.
+tools:
+-   tool: TextToSQL.UnityCatalog_Schema
+    description: Specify a UC Schema and navigate UC metadata to generate Text to SQL.
+    parameters:
+        warehouse_id: '475b94ddc7cd5211'
+        catalog: main
+        schema: default
+pip_requirements: []
