@@ -19,7 +19,7 @@ from langchain_core.messages import HumanMessage, AIMessage, ChatMessage, System
 class ChatBot():
 
     __OPENAI_KEY = os.getenv("OPENAI_API_KEY")
-'''
+    '''
     __BASE_TOOLS = [
             {
                 "type": "function",
@@ -39,7 +39,7 @@ class ChatBot():
                 },
             }
         ]
-'''
+    '''
     
     def __init__(self, config = {}, helpers = []):
         instruction_prompt = config.get('instruction', "You are an assistant.")

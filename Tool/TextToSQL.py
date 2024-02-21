@@ -11,8 +11,8 @@ class UnityCatalog_Schema():
     self.db_api_token = os.getenv("DATABRICKS_TOKEN")
     self.databricks_instance = os.getenv("DATABRICKS_HOST")
     self.warehouse_id = warehouse_id
-    self.catalog = catalog
-    self.schema = schema
+    self.catalog = catalog.lower()
+    self.schema = schema.lower()
   
   def list_table(self):
     """Returns a list of all available tables."""
@@ -87,14 +87,20 @@ class UnityCatalog_Schema():
     if response.status_code == 200:
         result = response.json()
         #print(result)
-        columns = result['manifest']['schema']['columns']
-        rows = result['result']['data_array']
+        if 'manifest' in result:
+          columns = result['manifest']['schema']['columns']
+          if 'data_array' in result['result']:
+            rows = result['result']['data_array']
 
-        #return results in pipe delimited format
-        col_names = [col['name'] for col in columns]
-        ret = '|'.join(col_names) + '\n'
-        for row in rows:
-          ret += '|'.join(str(cell) for cell in row) + '\n'
+            #return results in pipe delimited format
+            col_names = [col['name'] for col in columns]
+            ret = '|'.join(col_names) + '\n'
+            for row in rows:
+              ret += '|'.join(str(cell) for cell in row) + '\n'
+          else:
+            ret = 'No Records Found.'
+        else:
+          ret = json.dumps(result['status'])
 
         return ret
 

@@ -16,15 +16,22 @@ class ChatModel(mlflow.pyfunc.PythonModel):
     self.config = config
     self.helpers = helpers
 
-    self.llm_method = config.get('llm_method', 'openai') #openai, azureai or gateway
+    self.provider = config.get('provider', 'openai') #openai, azureai or databricks
     self.model = config.get('model', 'gpt-4-1106-preview')
-    self.gateway = config.get('gateway', 'databricks')
+    self.endpoint_type = config.get('endpoint_type', 'chat')
     self.route = config.get('route', '')
     self.instruction_prompt = config.get('instruction_prompt', 'You are an assistant.')
-    self.log_dir = config.get('log_directory', '')
+    self.log_directory = config.get('log_directory', '')
 
   def load_context(self, context):
-    self.bot = ChatBot(self.helpers, self.instruction_prompt, model = self.model)
+    config = {
+      "instruction": self.instruction_prompt,
+      "provider": self.provider,
+      "model": self.model,
+      "endpoint_type": self.endpoint_type,
+      "log_directory": self.log_directory
+    }
+    self.bot = ChatBot(config, self.helpers)
 
   def get_input(self, model_input):
     import pandas as pd

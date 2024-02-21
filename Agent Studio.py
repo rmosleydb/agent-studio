@@ -275,7 +275,6 @@ def add_agent_tool(selected_tool, yaml_text):
     new_tool_params = new_tool['parameters']
 
     agent_dict['tools'].append({
-      "object_id": new_tool['object_id'],
       "tool": new_tool['tool'],
       "description": new_tool['documentation'],
       "parameters":{p["name"]: p["default"] for p in new_tool_params}

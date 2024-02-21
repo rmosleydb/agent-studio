@@ -8,47 +8,11 @@ dbutils.library.restartPython()
 
 # COMMAND ----------
 
-endpoint_name = "RMAgent"
+endpoint_name = "sample_agent"
 
 DESCRIPTION = f"""
 # Chatbot powered by Databricks
-This chatbot helps you answers questions regarding Databricks Documentation. It uses retrieval augmented generation to infuse data relevant to your question into the LLM and generates an accurate response.
-"""
-
-# COMMAND ----------
-
-endpoint_name = "RMSQLAgent"
-
-DESCRIPTION = f"""
-# Chatbot powered by Databricks
-This bot has the ability to generate SQL and execute it against Databricks to answer a user's question about that data.
-"""
-
-# COMMAND ----------
-
-endpoint_name = "RMAPIAgent"
-
-DESCRIPTION = f"""
-# Chatbot powered by Databricks
-This chatbot helps you execute tasks against the Databricks API. It uses retrieval to infuse knowledge about the Databricks API relevant to your requests into the LLM and executes tasks against the Databricks API.
-"""
-
-# COMMAND ----------
-
-endpoint_name = "northwind"
-
-DESCRIPTION = f"""
-# Chatbot powered by Databricks
-This chatbot uses sql to query the northwind dataset.
-"""
-
-# COMMAND ----------
-
-endpoint_name = "RMRAGAgent_Mixtral"
-
-DESCRIPTION = f"""
-# Chatbot powered by Databricks
-This chatbot helps you look up information about the Databricks API. It uses retrieval to infuse knowledge about the Databricks API relevant to your requests about the Databricks API.
+Sample agent that uses text to sql.
 """
 
 # COMMAND ----------
@@ -297,5 +261,3 @@ dbx_app.mount_gradio_app(demo)
 import nest_asyncio
 nest_asyncio.apply()
 dbx_app.run()
-
-# COMMAND ----------

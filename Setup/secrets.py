@@ -14,7 +14,7 @@ payload = {
     }
 
 
-#response = requests.post(f'https://{workspaceUrl}/api/2.0/secrets/scopes/create', headers=headers, json=payload)
+response = requests.post(f'https://{workspaceUrl}/api/2.0/secrets/scopes/create', headers=headers, json=payload)
 response = requests.get(f'https://{workspaceUrl}/api/2.0/secrets/list?scope=agent_studio', headers=headers)
 
 print(response.json())
