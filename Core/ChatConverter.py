@@ -176,7 +176,7 @@ You are capable of using a variety of tools to answer a question or accomplish a
 
 {tool_list}
 
-Tool Name: output
+Tool Name: helper_x--output
 Description: Use this tool to respond to the user.
 Arguments:
   name: content  (required)
@@ -187,13 +187,13 @@ You must use these tools to respond. Your response must have the following forma
 
 <!tool:tool_name|||first_argument_name:first_argument_value|||nth_argument_name:nth_argument_value!>
 
-For example, to use a tool called "find_product" with arguments "first_int" and "second_int", to answer the prompt "what is 8 times 10?" you would respond with:
+For example, to use a tool called "helper_0--find_product" with arguments "first_int" and "second_int", to answer the prompt "what is 8 times 10?" you would respond with:
 
-<!tool:find_product|||first_int:8|||second_int:10!>
+<!tool:helper_0--find_product|||first_int:8|||second_int:10!>
 
 When responding to the user, you must use this format, using the output tool! If you'd like to ask how the user is doing you must write:
 
-<!tool:output|||content:How are you today?!>
+<!tool:helper_x--output|||content:How are you today?!>
 
 Remember, you must use one of the tools specified above, and you must start your response with <!tool:"""
 
