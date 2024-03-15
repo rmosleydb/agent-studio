@@ -237,7 +237,7 @@ with gr.Blocks(theme=gr.themes.Soft()) as demo:
 
 # COMMAND ----------
 
-app_port = 8765
+app_port = 8766
 
 # COMMAND ----------
 
