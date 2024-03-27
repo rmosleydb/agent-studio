@@ -58,6 +58,9 @@ class ChatBot():
         elif model == 'llama2':
             model = 'databricks-llama-2-70b-chat'
             endpoint_type = 'chat-basic' 
+        elif model == 'dbrx' or model == 'databricks-dbrx-instruct':
+            model = 'databricks-dbrx-instruct'
+            endpoint_type = 'chat-basic' 
         self.INSTRUCTION_PROMPT = instruction_prompt
         self.model = model
         self.functions = []#self.__BASE_FUNCTION.copy()
