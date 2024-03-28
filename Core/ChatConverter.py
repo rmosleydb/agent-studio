@@ -10,8 +10,11 @@ class ChatDatabricks_ToolConverter(ChatDatabricks):
   def predict_messages(self, messages, tools = []):
     p = ToolParser()
     new_messages = p.tools_to_human_ai(messages, tools)
+
+    resp = ChatDatabricks.predict_messages(self, new_messages)
+    #print(f'LLM Response: {resp}')
     
-    return p.format_response(ChatDatabricks.predict_messages(self, new_messages).content)
+    return p.format_response(resp.content)
 
 
 
@@ -37,8 +40,11 @@ class ToolParser():
         break
     
     if not response.startswith('<!tool:'):
-      if '<!tool:output|||content:' in response:
-        response = response.replace('<!tool:output|||content:', '').replace('!>', '')
+      if '<!tool:helper_x--output###content:' in response:
+        response = response.replace('<!tool:helper_x--output###content:', '').replace('!>', '')
+      return AIMessage(content=response)
+    elif response.startswith('<!tool:helper_x--output###content:'):
+      response = response.replace('<!tool:helper_x--output###content:', '').replace('!>', '')
       return AIMessage(content=response)
     elif '!>' not in response:
       raise Exception(f'Invalid LLM output: {response}')
@@ -46,7 +52,7 @@ class ToolParser():
     start_tool = response.index('<!') + 2    
     end_tool = response.index('!>')
 
-    tool_call = response[start_tool:end_tool].split('|||')
+    tool_call = response[start_tool:end_tool].split('###')
 
     tool_name = tool_call[0].split(':')[1]
 
@@ -56,7 +62,7 @@ class ToolParser():
       colon = arg.index(':')
       args[arg[:colon]] = arg[colon+1:]
 
-    if tool_name == 'output':
+    if tool_name == 'helper_x--output':
       return AIMessage(content=args['content'])
     else:
       kwargs =  {
@@ -108,7 +114,7 @@ class ToolParser():
     content = message.content
     tool_calls = message.additional_kwargs.get('tool_calls', [])
     if len(content) > 0: #return regular content
-      return AIMessage(content = f"<!tool:output|||content:{content.strip()}!>")
+      return AIMessage(content = f"<!tool:helper_x--output###content:{content.strip()}!>")
       #return f' {content.strip()} {self.eos_token}'
       ret_obj = {"tool_name": "response", "arguments": {"content": content.strip()}}
       #return ' ```json\n{\n\t"tool_name": "response",\n\t"arguments": {"content": "' + content.strip() + '"}\n}\n``` ' + self.eos_token
@@ -124,7 +130,7 @@ class ToolParser():
 
     arg_str = ""
     for k in arguments.keys():
-      arg_str += f"|||{k}:{arguments[k]}"
+      arg_str += f"###{k}:{arguments[k]}"
     ret_str = f"<!tool:{tool_name}{arg_str}!>"
 
     '''
@@ -137,7 +143,7 @@ class ToolParser():
   def __parse_tool(self, message):
     #msg = message.to_json()
     
-    return HumanMessage(content=f"<!tool:{message.name}|||response:{message.content}!>")
+    return HumanMessage(content=f"<!tool:{message.name}###response:{message.content}!>")
     
     '''
     content = {
@@ -185,15 +191,15 @@ Arguments:
  
 You must use these tools to respond. Your response must have the following format with the:
 
-<!tool:tool_name|||first_argument_name:first_argument_value|||nth_argument_name:nth_argument_value!>
+<!tool:tool_name###first_argument_name:first_argument_value###nth_argument_name:nth_argument_value!>
 
 For example, to use a tool called "helper_0--find_product" with arguments "first_int" and "second_int", to answer the prompt "what is 8 times 10?" you would respond with:
 
-<!tool:helper_0--find_product|||first_int:8|||second_int:10!>
+<!tool:helper_0--find_product###first_int:8###second_int:10!>
 
-When responding to the user, you must use this format, using the output tool! If you'd like to ask how the user is doing you must write:
+When responding to the user, you must use this format, using the helper_x--output tool! If you'd like to ask how the user is doing you must write:
 
-<!tool:helper_x--output|||content:How are you today?!>
+<!tool:helper_x--output###content:How are you today?!>
 
 Remember, you must use one of the tools specified above, and you must start your response with <!tool:"""
 
