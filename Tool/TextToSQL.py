@@ -56,14 +56,14 @@ class UnityCatalog_Schema():
   
   def sample_table_records(self, tables: str, limit: int = 3):
     """Receives a list of comma separated table names and the number (limit) of records (10 maximum) for each table and returns sample records for each table."""
-
+    limit = int(limit)
     tables_arr = tables.replace(' ', '').split(',')
 
     ret = ""
     for tbl in tables_arr:
       sql = f'select * from {self.catalog}.{self.schema}.{tbl}'
 
-      ret += f'Sample records for {table}: \n'
+      ret += f'Sample records for {tbl}: \n'
       ret += self.run_sql_statement(sql, min(10,limit)) + "\n\n"
       
     return ret
